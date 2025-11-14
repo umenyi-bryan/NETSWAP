@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETSWAP - File Transfer | Created by CHINEDU</title>
+    <meta name="description" content="NETSWAP - The ultimate cross-platform file transfer solution. Transfer files of any size between any devices. Created by CHINEDU.">
+    <meta name="author" content="CHINEDU">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- ASCII Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            ⚡ NETSWAP
+            <span class="creator-tag">by CHINEDU</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/terminal" class="nav-link"><i class="fas fa-terminal"></i> Terminal</a>
+            <a href="/files" class="nav-link"><i class="fas fa-folder"></i> Files</a>
+            <a href="/network" class="nav-link"><i class="fas fa-globe"></i> Network</a>
+            <a href="/about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- ASCII Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><strong>NETSWAP</strong> - The Ultimate File Transfer Solution</p>
+            <p>Created with ❤️ by <strong>CHINEDU</strong></p>
+            <p class="footer-links">
+                <a href="/about">About</a> | 
+                <a href="/network">Network Setup</a> | 
+                <a href="/terminal">CLI Tool</a>
+            </p>
+        </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

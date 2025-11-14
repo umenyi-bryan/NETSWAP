@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- ASCII Hero Section -->
+    <div class="hero-section">
+        <h1 class="glowing-text">NETSWAP</h1>
+        <p class="subtitle">⚡ ULTIMATE FILE TRANSFER ⚡</p>
+        <div class="creator-badge">
+            <i class="fas fa-crown"></i>
+            <span>CREATED BY {{ creator }}</span>
+        </div>
+        
+        <!-- ASCII Art -->
+        <div class="ascii-art">
+            <pre style="color: var(--neon-cyan); text-align: center; font-size: 0.6rem; margin: 2rem 0;">
+    ┌─────────────────────────────────────────────────────┐
+    │  ███╗   ██╗███████╗████████╗███████╗██╗    ██╗ █████╗ ██████╗  │
+    │  ████╗  ██║██╔════╝╚══██╔══╝██╔════╝██║    ██║██╔══██╗██╔══██╗ │
+    │  ██╔██╗ ██║█████╗     ██║   ███████╗██║ █╗ ██║███████║██████╔╝ │
+    │  ██║╚██╗██║██╔══╝     ██║   ╚════██║██║███╗██║██╔══██║██╔═══╝  │
+    │  ██║ ╚████║███████╗   ██║   ███████║╚███╔███╔╝██║  ██║██║      │
+    │  ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝      │
+    └─────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-bolt"></i>
+            <h3>LIGHTNING FAST</h3>
+            <p>Transfer at maximum speed</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-globe"></i>
+            <h3>WORLDWIDE</h3>
+            <p>Works over internet</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>SECURE</h3>
+            <p>File verification</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-infinity"></i>
+            <h3>NO LIMITS</h3>
+            <p>Any file size</p>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <div class="action-card">
+            <h3>🚀 SEND FILE</h3>
+            <div class="form-group">
+                <input type="file" id="fileInput" class="file-input">
+                <input type="text" id="targetIp" placeholder="Target IP" class="text-input">
+                <input type="number" id="targetPort" placeholder="Port (8888)" value="8888" class="text-input">
+                <button onclick="sendFile()" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> LAUNCH TRANSFER
+                </button>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h3>🎧 RECEIVE FILES</h3>
+            <div class="form-group">
+                <input type="number" id="listenPort" placeholder="Port (8888)" value="8888" class="text-input">
+                <button onclick="startReceiver()" class="btn btn-success">
+                    <i class="fas fa-satellite-dish"></i> START RECEIVER
+                </button>
+                <button onclick="stopReceiver()" class="btn btn-danger">
+                    <i class="fas fa-stop"></i> STOP RECEIVER
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Status -->
+    <div class="transfer-status">
+        <h3 style="text-align: center; color: var(--neon-purple); margin-bottom: 1rem;">
+            <i class="fas fa-sync-alt"></i> TRANSFER STATUS
+        </h3>
+        <div id="transferLog" class="log-container">
+            <div class="log-info">🚀 NETSWAP READY</div>
+            <div class="log-info">💡 Select a file to begin transfer</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

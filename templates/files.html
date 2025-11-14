@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="hero-section">
+        <h1 class="glowing-text">FILE MANAGER</h1>
+        <p class="subtitle">📁 MANAGE YOUR TRANSFERS 📁</p>
+        <div class="creator-badge">
+            <i class="fas fa-folder"></i>
+            <span>CREATED BY {{ creator }}</span>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <div class="action-card">
+            <h3>📤 UPLOAD FILES</h3>
+            <div class="form-group">
+                <input type="file" id="fileUpload" class="file-input" multiple>
+                <button onclick="uploadFiles()" class="btn btn-primary">
+                    <i class="fas fa-cloud-upload-alt"></i> UPLOAD TO SERVER
+                </button>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h3>🔄 RECENT TRANSFERS</h3>
+            <div id="fileList" class="form-group">
+                <div style="color: var(--neon-cyan); text-align: center; padding: 2rem;">
+                    <i class="fas fa-folder-open fa-3x" style="margin-bottom: 1rem;"></i>
+                    <p>No files transferred yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="transfer-status">
+        <h3 style="text-align: center; color: var(--neon-purple); margin-bottom: 1rem;">
+            <i class="fas fa-history"></i> TRANSFER HISTORY
+        </h3>
+        <div id="fileLog" class="log-container">
+            <div class="log-info">📁 FILE MANAGER READY</div>
+            <div class="log-info">💡 Upload files to make them available for transfer</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function uploadFiles() {
+    const fileInput = document.getElementById('fileUpload');
+    if (!fileInput.files.length) {
+        netswapUI.log('❌ PLEASE SELECT FILES', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    for (let i = 0; i < fileInput.files.length; i++) {
+        formData.append('files', fileInput.files[i]);
+    }
+
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            netswapUI.log(`✅ UPLOADED: ${data.file.name}`, 'success');
+        } else {
+            netswapUI.log(`❌ UPLOAD FAILED: ${data.error}`, 'error');
+        }
+    })
+    .catch(error => {
+        netswapUI.log(`❌ UPLOAD ERROR: ${error}`, 'error');
+    });
+}
+
+// Listen for file upload events
+netswapUI.socket.on('file_uploaded', (data) => {
+    const fileList = document.getElementById('fileList');
+    fileList.innerHTML = `
+        <div style="border: 1px solid var(--neon-green); padding: 1rem; margin: 0.5rem 0;">
+            <div style="color: var(--neon-green);">
+                <i class="fas fa-file"></i> <strong>${data.file.name}</strong>
+            </div>
+            <div style="color: var(--neon-cyan); font-size: 0.9rem;">
+                Size: ${netswapUI.formatBytes(data.file.size)} | Type: ${data.file.type}
+            </div>
+            <button onclick="downloadFile('${data.file.name}')" class="btn btn-success" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">
+                <i class="fas fa-download"></i> DOWNLOAD
+            </button>
+        </div>
+    `;
+});
+
+function downloadFile(filename) {
+    window.open(`/download/${filename}`, '_blank');
+}
+</script>
+{% endblock %}

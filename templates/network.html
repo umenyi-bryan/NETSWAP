@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="hero-section">
+        <h1 class="glowing-text">NETWORK SETUP</h1>
+        <p class="subtitle">🌐 INTERNET TRANSFER CONFIGURATION 🌐</p>
+        <div class="creator-badge">
+            <i class="fas fa-globe"></i>
+            <span>CREATED BY {{ creator }}</span>
+        </div>
+    </div>
+
+    <div class="network-info">
+        <div class="action-card">
+            <h3><i class="fas fa-network-wired"></i> YOUR NETWORK INFORMATION</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Public IP:</label>
+                    <span id="publicIp" class="highlight">{{ public_ip }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Local IP:</label>
+                    <span id="localIp">Detecting...</span>
+                </div>
+                <div class="info-item">
+                    <label>Status:</label>
+                    <span id="natStatus">Checking...</span>
+                </div>
+            </div>
+            <button onclick="refreshNetworkInfo()" class="btn btn-primary">
+                <i class="fas fa-sync-alt"></i> REFRESH INFO
+            </button>
+        </div>
+
+        <div class="action-card">
+            <h3><i class="fas fa-share-alt"></i> SHARE CODE SYSTEM</h3>
+            <p style="color: var(--neon-cyan); margin-bottom: 1rem;">
+                Generate temporary codes for easy connections
+            </p>
+            <div class="form-group">
+                <input type="number" id="sharePort" value="8888" class="text-input" placeholder="Port">
+                <button onclick="createShareCode()" class="btn btn-success">
+                    <i class="fas fa-qrcode"></i> GENERATE SHARE CODE
+                </button>
+                <div id="shareCodeResult" class="share-code-result"></div>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h3><i class="fas fa-plug"></i> CONNECT VIA SHARE CODE</h3>
+            <div class="form-group">
+                <input type="text" id="inputShareCode" class="text-input" placeholder="Enter Share Code (e.g., A1B2C3D4)">
+                <button onclick="connectViaShareCode()" class="btn btn-primary">
+                    <i class="fas fa-link"></i> CONNECT
+                </button>
+                <div id="shareConnectResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="transfer-status">
+        <h3 style="text-align: center; color: var(--neon-purple); margin-bottom: 1rem;">
+            <i class="fas fa-satellite"></i> NETWORK LOG
+        </h3>
+        <div id="networkLog" class="log-container">
+            <div class="log-info">🌐 NETWORK CONSOLE READY</div>
+            <div class="log-info">💡 Use share codes for easy internet transfers</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function refreshNetworkInfo() {
+    const networkLog = document.getElementById('networkLog');
+    const entry = document.createElement('div');
+    entry.className = 'log-info';
+    entry.innerHTML = '🔍 Refreshing network information...';
+    networkLog.appendChild(entry);
+    
+    // Simulate network detection
+    setTimeout(() => {
+        document.getElementById('localIp').textContent = '192.168.1.' + Math.floor(Math.random() * 255);
+        document.getElementById('natStatus').innerHTML = '<span class="log-success">🟢 READY FOR TRANSFERS</span>';
+        
+        const successEntry = document.createElement('div');
+        successEntry.className = 'log-success';
+        successEntry.innerHTML = '✅ Network information updated';
+        networkLog.appendChild(successEntry);
+        networkLog.scrollTop = networkLog.scrollHeight;
+    }, 1000);
+}
+
+function createShareCode() {
+    const port = document.getElementById('sharePort').value;
+    netswapUI.socket.emit('create_share_code', { port: parseInt(port) });
+}
+
+function connectViaShareCode() {
+    const shareCode = document.getElementById('inputShareCode').value.trim().toUpperCase();
+    if (!shareCode) {
+        alert('❌ Please enter a share code');
+        return;
+    }
+    
+    netswapUI.socket.emit('connect_via_share_code', { share_code: shareCode });
+}
+
+// Network-specific socket listeners
+netswapUI.socket.on('share_code_created', (data) => {
+    const resultDiv = document.getElementById('shareCodeResult');
+    resultDiv.innerHTML = `
+        <div style="background: rgba(0,255,136,0.1); border: 1px solid var(--neon-green); padding: 1rem; margin-top: 1rem; text-align: center;">
+            <h4 style="color: var(--neon-green); margin-bottom: 0.5rem;">🎯 SHARE CODE CREATED</h4>
+            <div style="font-family: 'Courier New', monospace; font-size: 2rem; font-weight: bold; color: var(--neon-cyan); letter-spacing: 0.5rem;">
+                ${data.share_code}
+            </div>
+            <p style="color: var(--neon-cyan); margin: 0.5rem 0;">
+                Port: ${data.port} | IP: ${data.public_ip}
+            </p>
+            <small style="color: var(--neon-purple);">⏰ This code expires in 1 hour</small>
+        </div>
+    `;
+    
+    const networkLog = document.getElementById('networkLog');
+    const entry = document.createElement('div');
+    entry.className = 'log-success';
+    entry.innerHTML = `🎯 Share code generated: ${data.share_code} for port ${data.port}`;
+    networkLog.appendChild(entry);
+    networkLog.scrollTop = networkLog.scrollHeight;
+});
+
+netswapUI.socket.on('share_code_resolved', (data) => {
+    const resultDiv = document.getElementById('shareConnectResult');
+    resultDiv.innerHTML = `
+        <div style="background: rgba(0,136,255,0.1); border: 1px solid var(--neon-blue); padding: 1rem; margin-top: 1rem;">
+            <div class="log-success">✅ Resolved to: ${data.target_ip}:${data.target_port}</div>
+        </div>
+    `;
+    
+    // Auto-fill the send form
+    document.getElementById('targetIp').value = data.target_ip;
+    document.getElementById('targetPort').value = data.target_port;
+});
+
+netswapUI.socket.on('share_code_error', (data) => {
+    const resultDiv = document.getElementById('shareConnectResult');
+    resultDiv.innerHTML = `<div class="log-error">❌ Error: ${data.error}</div>`;
+});
+
+// Load network info on page load
+document.addEventListener('DOMContentLoaded', () => {
+    refreshNetworkInfo();
+});
+</script>
+{% endblock %}

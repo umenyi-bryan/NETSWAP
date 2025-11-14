@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="hero-section">
+        <h1 class="glowing-text">TERMINAL MODE</h1>
+        <p class="subtitle">⚡ POWER USER INTERFACE ⚡</p>
+        <div class="creator-badge">
+            <i class="fas fa-terminal"></i>
+            <span>CREATED BY {{ creator }}</span>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <div class="action-card">
+            <h3>🔧 COMMAND LINE USAGE</h3>
+            <div class="form-group">
+                <pre style="color: var(--neon-cyan); background: rgba(0,0,0,0.7); padding: 1rem; border: 1px solid var(--neon-blue);">
+# Send a file
+python netswap_cli.py send filename.mp4 192.168.1.100 8888
+
+# Receive files
+python netswap_cli.py receive 8888 --dir ./downloads
+
+# Get network info
+python netswap_cli.py info
+
+# Public mode (internet)
+python netswap_cli.py receive 8888 --public</pre>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h3>🎯 QUICK COMMANDS</h3>
+            <div class="form-group">
+                <button onclick="runCommand('info')" class="btn btn-primary">
+                    <i class="fas fa-network-wired"></i> NETWORK INFO
+                </button>
+                <button onclick="runCommand('receive')" class="btn btn-success">
+                    <i class="fas fa-satellite-dish"></i> START RECEIVER
+                </button>
+                <button onclick="runCommand('stop')" class="btn btn-danger">
+                    <i class="fas fa-stop"></i> STOP ALL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="transfer-status">
+        <h3 style="text-align: center; color: var(--neon-purple); margin-bottom: 1rem;">
+            <i class="fas fa-terminal"></i> COMMAND OUTPUT
+        </h3>
+        <div id="terminalLog" class="log-container">
+            <div class="log-info">🚀 NETSWAP TERMINAL READY</div>
+            <div class="log-info">💡 Use commands above or run CLI manually</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function runCommand(cmd) {
+    const log = document.getElementById('terminalLog');
+    const entry = document.createElement('div');
+    
+    switch(cmd) {
+        case 'info':
+            entry.className = 'log-info';
+            entry.innerHTML = '🔍 Checking network information...';
+            break;
+        case 'receive':
+            entry.className = 'log-success';
+            entry.innerHTML = '🎧 Starting receiver on port 8888...';
+            break;
+        case 'stop':
+            entry.className = 'log-warning';
+            entry.innerHTML = '🛑 Stopping all services...';
+            break;
+    }
+    
+    log.appendChild(entry);
+    log.scrollTop = log.scrollHeight;
+}
+</script>
+{% endblock %}

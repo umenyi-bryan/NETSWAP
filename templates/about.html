@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="hero-section">
+        <h1 class="glowing-text">ABOUT NETSWAP</h1>
+        <p class="subtitle">⚡ THE ULTIMATE FILE TRANSFER SOLUTION ⚡</p>
+        <div class="creator-badge">
+            <i class="fas fa-crown"></i>
+            <span>CREATED BY {{ creator }}</span>
+        </div>
+    </div>
+
+    <div class="about-content">
+        <div class="action-card">
+            <h2>🎯 THE VISION</h2>
+            <p style="color: var(--neon-cyan); line-height: 1.8;">
+                <strong>NETSWAP was born from a simple idea:</strong> What if transferring files between any devices was as easy as sending a text message? 
+                No complicated setup, no file size limits, no technical knowledge required.
+            </p>
+        </div>
+
+        <div class="action-card">
+            <h2>🚀 REVOLUTIONARY FEATURES</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <h4>LIGHTNING FAST</h4>
+                    <p>Direct P2P transfers at maximum speed</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-globe"></i>
+                    <h4>INTERNET READY</h4>
+                    <p>Works locally and across the globe</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>SECURE</h4>
+                    <p>File integrity verification</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-infinity"></i>
+                    <h4>NO LIMITS</h4>
+                    <p>Transfer files of any size</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h2>👨‍💻 FROM THE CREATOR</h2>
+            <div style="display: flex; gap: 2rem; align-items: center; padding: 2rem; background: rgba(0,0,0,0.3); border-left: 4px solid gold;">
+                <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(45deg, gold, orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: black;">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div>
+                    <h3 style="color: gold; margin-bottom: 0.5rem;">CHINEDU</h3>
+                    <p style="color: var(--neon-cyan); font-style: italic; margin-bottom: 1rem;">Creator & Lead Developer</p>
+                    <p style="color: var(--neon-green); line-height: 1.6;">
+                        "I built NETSWAP to solve a real problem I faced every day. Why should transferring files between my phone, laptop, and friends' devices be so complicated?
+                        This project combines cutting-edge networking technology with a beautiful, intuitive interface. Every line of code was written with care to ensure reliability, speed, and simplicity."
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h2>🔧 TECHNICAL MAGIC</h2>
+            <div style="color: var(--neon-cyan); line-height: 1.8;">
+                <p><strong>How it works:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>Raw TCP socket connections for maximum speed</li>
+                    <li>MD5 checksum verification for file integrity</li>
+                    <li>Share code system for easy connections</li>
+                    <li>WebSocket real-time communication</li>
+                    <li>Cross-platform compatibility</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h2>🔮 FUTURE VISION</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h4 style="color: var(--neon-green); margin-bottom: 1rem;">🎯 COMING SOON</h4>
+                    <ul style="color: var(--neon-cyan);">
+                        <li>Mobile Apps</li>
+                        <li>Cloud Relay Service</li>
+                        <li>Group File Sharing</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: var(--neon-blue); margin-bottom: 1rem;">🚀 FUTURE PLANS</h4>
+                    <ul style="color: var(--neon-cyan);">
+                        <li>End-to-End Encryption</li>
+                        <li>WebRTC Integration</li>
+                        <li>API for Developers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
